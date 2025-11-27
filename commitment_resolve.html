@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-7">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5>Resolve Commitment</h5>
+        <div class="mb-3">
+          <strong>Commitment:</strong>
+          <p class="mt-2">{{ commitment.commitment_text }}</p>
+        </div>
+        {% if error %}
+          <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+        <form method="post" action="/commitments/{{ commitment.id }}/resolve">
+          <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select name="status" class="form-select" required>
+              <option value="completed">completed</option>
+              <option value="failed">failed</option>
+            </select>
+          </div>
+          
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
