@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div>
+    <h4 class="mb-0">Dashboard</h4>
+    <small class="text-muted">Welcome, {{ user.username }}</small>
+  </div>
+  <div>
+    <a href="/commitments/new" class="btn btn-success">Create New Commitment</a>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    {% if commitments %}
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Commitment</th>
+            <th>Confidence</th>
+            <th>Deadline</th>
+            <th>Status</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in commitments %}
+          <tr>
+            <td style="min-width: 250px;">{{ c.commitment_text }}</td>
+            <td>{{ c.declared_confidence_pct }}%</td>
+            <td>{{ c.deadline.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td>
+              {% if c.status == 'open' %}
+                <span class="badge bg-primary">open</span>
+              {% elif c.status == 'completed' %}
+                <span class="badge bg-success">completed</span>
+              {% else %}
+                <span class="badge bg-danger">failed</span>
+              {% endif %}
+            </td>
+            <td class="text-end">
+              {% if c.status == 'open' %}
+                <a href="/commitments/{{ c.id }}/resolve" class="btn btn-sm btn-outline-primary">Update Outcome</a>
+              {% else %}
+                <span class="text-muted small">Resolved</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+      <div class="p-4">
+        <p class="mb-2">You have no commitments yet.</p>
+        <a href="/commitments/new" class="btn btn-outline-primary">Create your first commitment</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}
